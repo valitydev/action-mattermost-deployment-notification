@@ -1,31 +1,28 @@
-name: "Frontend: Notify"
+name: Notify
 on:
   push:
-    branches: ['master', 'main']
-  pull_request:
-    branches: ['*']
+    branches: ["master", "main"]
 jobs:
-  build:
-    name: Build
+  notify:
+    name: Notify
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: 8BitJonny/gh-get-current-pr@3.0.0
-        id: PR
+      - name: Get commits SHA
+        id: commits_sha
+        shell: bash
+        run: |
+          LAST_COMMIT=$(git log -n 1 --pretty=format:%H)
+          echo "Last commit SHA: $LAST_COMMIT"
+          echo "::set-output name=last_commit_sha::$LAST_COMMIT"
+          CURRENT_COMMIT=$(git rev-parse HEAD)
+          echo "Current commit SHA: $CURRENT_COMMIT"
+          echo "::set-output name=current_commit_sha::$CURRENT_COMMIT"
+          echo ${{ github.sha }}
       - name: Mattermost Notification
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_CHANNEL: "frontend-deployments"
-          SLACK_USERNAME: "Frontend"
-          SLACK_ICON_EMOJI: ":tractor:"
-          SLACK_WEBHOOK: ${{ secrets.MATTERMOST_WEBHOOK_URL }}
-          SLACK_COLOR: ${{ job.status }}
-          SLACK_LINK_NAMES: true
-          SLACK_FOOTER: ""
-          MSG_MINIMAL: true
-          SLACK_TITLE: ${{ github.repository }}
-          SLACK_MESSAGE: |
-            **[${{ steps.PR.outputs.pr_title }}](${{ github.server_url }}/${{ github.repository }}|
-            /pull/${{ steps.PR.outputs.number }})**
-
-            ${{ steps.PR.outputs.pr_body }}
+        uses: ./action
+        if: ${{ steps.commits_sha.outputs.last_commit_sha == steps.commits_sha.outputs.current_commit_sha }}
+        with:
+          webhook: ${{ secrets.MATTERMOST_WEBHOOK_URL }}
+          channel: "frontend-deployments"
+          username: "Frontend"
