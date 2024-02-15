@@ -33,7 +33,7 @@ runs:
         SLACK_FOOTER: ""
         MSG_MINIMAL: true
         SLACK_TITLE: ${{ github.repository }}
-        SLACK_MESSAGE: |
+        SLACK_MESSAGE: >
           **[${{ steps.PR.outputs.pr_title }}](${{ github.server_url }}/${{ github.repository }}
           /pull/${{ steps.PR.outputs.number }})**
 
