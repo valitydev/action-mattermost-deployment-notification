@@ -18,7 +18,7 @@ jobs:
           LAST_COMMIT=$(git rev-parse origin/master)
           echo "last_commit_sha=$LAST_COMMIT" >> $GITHUB_OUTPUT
           echo "Last commit SHA: $LAST_COMMIT"
-      - name: Mattermost Notification 2
+      - name: Mattermost Notification
         uses: ./
         if: ${{ github.sha == steps.last_commit.outputs.last_commit_sha }}
         with:
