@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: 8BitJonny/gh-get-current-pr@v3
+        id: PR
       - name: Mattermost Notification
         uses: rtCamp/action-slack-notify@v2
         env:
@@ -23,7 +25,7 @@ jobs:
           MSG_MINIMAL: true
           SLACK_TITLE: ${{ github.repository }}
           SLACK_MESSAGE: |
-            **[${{ github.event.pull_request.title }}](${{ github.server_url }}/${{ github.repository }}|
-            /pull/${{ github.event.number }})**
+            **[${{ steps.PR.outputs.title }}](${{ github.server_url }}/${{ github.repository }}|
+            /pull/${{ steps.PR.outputs.number }})**
 
-            ${{ github.event.pull_request.body }}
+            ${{ steps.PR.outputs.body }}
