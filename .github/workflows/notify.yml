@@ -2,6 +2,8 @@ name: Notify
 on:
   push:
     branches: ["master", "main"]
+  pull_request:
+    branches: ["*"]
 jobs:
   notify:
     name: Notify
@@ -12,9 +14,10 @@ jobs:
         id: last_commit
         shell: bash
         run: |
-          LAST_COMMIT=$(git rev-parse HEAD)
+          LAST_COMMIT=$(git rev-parse master)
           echo "last_commit_sha=$LAST_COMMIT" >> $GITHUB_OUTPUT
           echo "Last commit SHA: $LAST_COMMIT"
+          echo "2: $(git rev-parse HEAD)"
       - name: Mattermost Notification
         uses: ./
         if: ${{ github.sha == steps.last_commit.outputs.last_commit_sha }}
