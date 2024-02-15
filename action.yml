@@ -1,0 +1,40 @@
+name: "Mattermost Notify"
+inputs:
+  channel:
+    description: Channel path name
+    required: false
+    default: ""
+  username:
+    description: Username
+    required: false
+    default: ""
+  iconEmoji:
+    description: Icon emoji
+    required: false
+    default: ":tractor:"
+  webhook:
+    description: Mattermost webhook
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Get currentt PR
+      uses: 8BitJonny/gh-get-current-pr@3.0.0
+      id: PR
+    - name: Mattermost Notification
+      uses: rtCamp/action-slack-notify@v2
+      env:
+        SLACK_CHANNEL: ${{ inputs.channel }}
+        SLACK_USERNAME: ${{ inputs.username }}
+        SLACK_ICON_EMOJI: ${{ inputs.iconEmoji }}
+        SLACK_WEBHOOK: ${{ inputs.iconEmoji }}
+        SLACK_COLOR: ${{ job.status }}
+        SLACK_LINK_NAMES: true
+        SLACK_FOOTER: ""
+        MSG_MINIMAL: true
+        SLACK_TITLE: ${{ github.repository }}
+        SLACK_MESSAGE: |
+          **[${{ steps.PR.outputs.pr_title }}](${{ github.server_url }}/${{ github.repository }}|
+          /pull/${{ steps.PR.outputs.number }})**
+
+          ${{ steps.PR.outputs.pr_body }}
