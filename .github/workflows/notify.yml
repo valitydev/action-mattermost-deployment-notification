@@ -12,7 +12,7 @@ jobs:
         id: last_commit
         shell: bash
         run: |
-          LAST_COMMIT=$(git rev-parse master)
+          LAST_COMMIT=$(git rev-parse HEAD)
           echo "last_commit_sha=$LAST_COMMIT" >> $GITHUB_OUTPUT
           echo "Last commit SHA: $LAST_COMMIT"
       - name: Mattermost Notification
