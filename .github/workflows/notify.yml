@@ -9,7 +9,7 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: 8BitJonny/gh-get-current-pr@3.0.0
         id: PR
       - name: Mattermost Notification
