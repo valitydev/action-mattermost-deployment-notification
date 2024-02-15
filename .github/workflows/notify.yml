@@ -10,17 +10,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Get commits SHA
-        id: commits_sha
+      - name: Get last commit SHA
+        id: last_commit
         shell: bash
         run: |
           LAST_COMMIT=$(git rev-parse origin/master)
+          echo "last_commit_sha=$LAST_COMMIT" >> $GITHUB_OUTPUT
           echo "Last commit SHA: $LAST_COMMIT"
-          echo "::set-output name=last_commit_sha::$LAST_COMMIT"
-          echo ${{ github.sha }}
       - name: Mattermost Notification
         uses: ./
-        if: ${{ github.sha == steps.commits_sha.outputs.last_commit_sha }}
+        if: ${{ github.sha == steps.last_commit.outputs.last_commit_sha }}
         with:
           webhook: ${{ secrets.MATTERMOST_WEBHOOK_URL }}
           channel: "frontend-deployments"
