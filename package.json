@@ -1,0 +1,22 @@
+{
+  "name": "@vality/action-mattermost-notify",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/valitydev/action-mattermost-notify.git"
+  },
+  "author": "",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/valitydev/action-mattermost-notify/issues"
+  },
+  "homepage": "https://github.com/valitydev/action-mattermost-notify#readme",
+  "devDependencies": {
+    "prettier": "^3.2.5"
+  }
+}
