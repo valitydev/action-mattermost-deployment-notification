@@ -22,7 +22,7 @@ jobs:
           echo "::set-output name=current_commit_sha::$CURRENT_COMMIT"
           echo ${{ github.sha }}
       - name: Mattermost Notification
-        uses: ./action
+        uses: .
         if: ${{ steps.commits_sha.outputs.last_commit_sha == steps.commits_sha.outputs.current_commit_sha }}
         with:
           webhook: ${{ secrets.MATTERMOST_WEBHOOK_URL }}
