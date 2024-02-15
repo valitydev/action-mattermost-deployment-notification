@@ -14,16 +14,13 @@ jobs:
         id: commits_sha
         shell: bash
         run: |
-          LAST_COMMIT=$(git log -n 1 --pretty=format:%H)
+          LAST_COMMIT=$(git rev-parse origin/master)
           echo "Last commit SHA: $LAST_COMMIT"
           echo "::set-output name=last_commit_sha::$LAST_COMMIT"
-          CURRENT_COMMIT=$(git rev-parse HEAD)
-          echo "Current commit SHA: $CURRENT_COMMIT"
-          echo "::set-output name=current_commit_sha::$CURRENT_COMMIT"
           echo ${{ github.sha }}
       - name: Mattermost Notification
         uses: ./
-        if: ${{ steps.commits_sha.outputs.last_commit_sha == steps.commits_sha.outputs.current_commit_sha }}
+        if: ${{ github.sha == steps.commits_sha.outputs.last_commit_sha }}
         with:
           webhook: ${{ secrets.MATTERMOST_WEBHOOK_URL }}
           channel: "frontend-deployments"

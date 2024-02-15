@@ -1,5 +1,8 @@
 name: "Mattermost Notify"
 inputs:
+  webhook:
+    description: Mattermost webhook
+    required: true
   channel:
     description: Channel path name
     required: false
@@ -12,9 +15,6 @@ inputs:
     description: Icon emoji
     required: false
     default: ":tractor:"
-  webhook:
-    description: Mattermost webhook
-    required: true
 runs:
   using: composite
   steps:
@@ -27,7 +27,7 @@ runs:
         SLACK_CHANNEL: ${{ inputs.channel }}
         SLACK_USERNAME: ${{ inputs.username }}
         SLACK_ICON_EMOJI: ${{ inputs.iconEmoji }}
-        SLACK_WEBHOOK: ${{ inputs.iconEmoji }}
+        SLACK_WEBHOOK: ${{ inputs.webhook }}
         SLACK_COLOR: ${{ job.status }}
         SLACK_LINK_NAMES: true
         SLACK_FOOTER: ""
