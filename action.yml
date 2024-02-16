@@ -24,8 +24,9 @@ runs:
       run: |
         git fetch origin master
         LAST_COMMIT=$(git rev-parse origin/master)
+        SHA_7=${{ github.sha }}-7
         echo "last_commit_sha=$LAST_COMMIT" >> $GITHUB_OUTPUT
-        echo "sha_7=${{ github.sha:0:7 }}" >> $GITHUB_OUTPUT
+        echo "sha_7=$SHA_7" >> $GITHUB_OUTPUT
         echo "Last commit SHA: $LAST_COMMIT"
         echo "Current commit SHA: ${{ github.sha }}"
     - name: Get current PR
