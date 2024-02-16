@@ -22,9 +22,9 @@ runs:
       id: last_commit
       shell: bash
       run: |
+        SHA_7=${{ git rev-parse --short HEAD }}
         git fetch origin master
         LAST_COMMIT=$(git rev-parse origin/master)
-        SHA_7=${{ github.sha }}-7
         echo "last_commit_sha=$LAST_COMMIT" >> $GITHUB_OUTPUT
         echo "sha_7=$SHA_7" >> $GITHUB_OUTPUT
         echo "Last commit SHA: $LAST_COMMIT"
