@@ -64,5 +64,5 @@ runs:
         MSG_MINIMAL: true
         SLACK_TITLE: ${{ github.repository }}
         SLACK_MESSAGE: >
-          :rollbackIconEmoji: Rolled back to [${{ steps.last_commit.outputs.sha_7 }}](${{ github.server_url }}/${{ github.repository }}
+          :rewind: Rolled back to [${{ steps.last_commit.outputs.sha_7 }}](${{ github.server_url }}/${{ github.repository }}
           /commit/${{ github.sha }})
