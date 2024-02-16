@@ -18,10 +18,20 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Get currentt PR
+    - name: Get last commit SHA
+      id: last_commit
+      shell: bash
+      run: |
+        git fetch origin master
+        LAST_COMMIT=$(git rev-parse origin/master)
+        echo "last_commit_sha=$LAST_COMMIT" >> $GITHUB_OUTPUT
+        echo "Last commit SHA: $LAST_COMMIT"
+        echo "Current commit SHA: ${{ github.sha }}"
+    - name: Get current PR
       uses: 8BitJonny/gh-get-current-pr@3.0.0
       id: PR
-    - name: Mattermost Notification
+    - name: Deployment Notification
+      if: ${{ github.sha == steps.last_commit.outputs.last_commit_sha }}
       uses: rtCamp/action-slack-notify@v2
       env:
         SLACK_CHANNEL: ${{ inputs.channel }}
@@ -30,7 +40,7 @@ runs:
         SLACK_WEBHOOK: ${{ inputs.webhook }}
         SLACK_COLOR: ${{ job.status }}
         SLACK_LINK_NAMES: true
-        SLACK_FOOTER: ""
+        SLACK_FOOTER: "${{ github.sha:0:7 }}, PR #${{ steps.PR.outputs.number }}"
         MSG_MINIMAL: true
         SLACK_TITLE: ${{ github.repository }}
         SLACK_MESSAGE: >
@@ -38,3 +48,19 @@ runs:
           /pull/${{ steps.PR.outputs.number }})**
 
           ${{ steps.PR.outputs.pr_body }}
+    - name: Deployment Rollback Notification
+      if: ${{ github.sha != steps.last_commit.outputs.last_commit_sha }}
+      uses: rtCamp/action-slack-notify@v2
+      env:
+        SLACK_CHANNEL: ${{ inputs.channel }}
+        SLACK_USERNAME: ${{ inputs.username }}
+        SLACK_ICON_EMOJI: ${{ inputs.iconEmoji }}
+        SLACK_WEBHOOK: ${{ inputs.webhook }}
+        SLACK_COLOR: ${{ job.status }}
+        SLACK_LINK_NAMES: true
+        SLACK_FOOTER: "${{ github.sha:0:7 }}, PR #${{ steps.PR.outputs.number }}"
+        MSG_MINIMAL: true
+        SLACK_TITLE: ${{ github.repository }}
+        SLACK_MESSAGE: >
+          Rolled back to [${{ github.sha:0:7 }}](${{ github.server_url }}/${{ github.repository }}
+          /commit/${{ github.sha }})
