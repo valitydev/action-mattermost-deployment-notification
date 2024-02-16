@@ -22,9 +22,11 @@ runs:
       id: last_commit
       shell: bash
       run: |
+        SHA_7=$(git rev-parse --short HEAD)
         git fetch origin master
         LAST_COMMIT=$(git rev-parse origin/master)
         echo "last_commit_sha=$LAST_COMMIT" >> $GITHUB_OUTPUT
+        echo "sha_7=$SHA_7" >> $GITHUB_OUTPUT
         echo "Last commit SHA: $LAST_COMMIT"
         echo "Current commit SHA: ${{ github.sha }}"
     - name: Get current PR
@@ -40,7 +42,7 @@ runs:
         SLACK_WEBHOOK: ${{ inputs.webhook }}
         SLACK_COLOR: ${{ job.status }}
         SLACK_LINK_NAMES: true
-        SLACK_FOOTER: ${{ github.sha:0:7 }}
+        SLACK_FOOTER: ${{ steps.last_commit.outputs.sha_7 }}
         MSG_MINIMAL: true
         SLACK_TITLE: ${{ github.repository }}
         SLACK_MESSAGE: >
@@ -58,9 +60,9 @@ runs:
         SLACK_WEBHOOK: ${{ inputs.webhook }}
         SLACK_COLOR: "#ffcc00"
         SLACK_LINK_NAMES: true
-        SLACK_FOOTER: ${{ github.sha:0:7 }}
+        SLACK_FOOTER: ${{ steps.last_commit.outputs.sha_7 }}
         MSG_MINIMAL: true
         SLACK_TITLE: ${{ github.repository }}
         SLACK_MESSAGE: >
-          Rolled back to [${{ github.sha:0:7 }}](${{ github.server_url }}/${{ github.repository }}
+          :rewind: Rolled back to [${{ steps.last_commit.outputs.sha_7 }}](${{ github.server_url }}/${{ github.repository }}
           /commit/${{ github.sha }})
