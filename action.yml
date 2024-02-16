@@ -22,7 +22,7 @@ runs:
       id: last_commit
       shell: bash
       run: |
-        SHA_7=${{ git rev-parse --short HEAD }}
+        SHA_7=$(git rev-parse --short HEAD)
         git fetch origin master
         LAST_COMMIT=$(git rev-parse origin/master)
         echo "last_commit_sha=$LAST_COMMIT" >> $GITHUB_OUTPUT
@@ -64,5 +64,5 @@ runs:
         MSG_MINIMAL: true
         SLACK_TITLE: ${{ github.repository }}
         SLACK_MESSAGE: >
-          Rolled back to [${{ steps.last_commit.outputs.sha_7 }}](${{ github.server_url }}/${{ github.repository }}
+          :rollbackIconEmoji: Rolled back to [${{ steps.last_commit.outputs.sha_7 }}](${{ github.server_url }}/${{ github.repository }}
           /commit/${{ github.sha }})
