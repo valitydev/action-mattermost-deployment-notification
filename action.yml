@@ -1,4 +1,8 @@
 name: "Mattermost Notify"
+description: "Notification from Mattermost or Slack about successful deployments and rollbacks"
+branding:
+  icon: message-square
+  color: blue
 inputs:
   webhook:
     description: Mattermost webhook
