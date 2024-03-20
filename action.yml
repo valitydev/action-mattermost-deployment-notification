@@ -10,7 +10,7 @@ inputs:
   username:
     description: Username
     required: false
-    default: ""
+    default: "Deploy"
   iconEmoji:
     description: Icon emoji
     required: false
