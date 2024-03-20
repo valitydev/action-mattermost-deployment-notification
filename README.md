@@ -58,3 +58,5 @@ jobs:
 ## Configuration
 
 https://github.com/valitydev/action-mattermost-notify/blob/master/action.yml#L3-L17
+
+https://github.com/valitydev/action-mattermost-notify/blob/9d69f21f39f02ae9a819c4cdc481ae67e426288d/action.yml#L3-L17
