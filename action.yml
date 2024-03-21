@@ -49,10 +49,9 @@ runs:
         SLACK_FOOTER: ${{ steps.last_commit.outputs.sha_7 }}
         MSG_MINIMAL: true
         SLACK_TITLE: ${{ github.repository }}
-        SLACK_MESSAGE: >
-          **[${{ steps.PR.outputs.pr_title }}](${{ github.server_url }}/${{ github.repository }}/pull/${{ steps.PR.outputs.number }})**
-
-          ${{ steps.PR.outputs.pr_body }}
+        SLACK_MESSAGE: "**[${{ steps.PR.outputs.pr_title }}]\
+          (${{ github.server_url }}/${{ github.repository }}/pull/${{ steps.PR.outputs.number }})**\
+          \n\n${{ steps.PR.outputs.pr_body }}"
     - name: Deployment Rollback Notification
       if: ${{ github.sha != steps.last_commit.outputs.last_commit_sha }}
       uses: rtCamp/action-slack-notify@v2
@@ -66,5 +65,6 @@ runs:
         SLACK_FOOTER: ${{ steps.last_commit.outputs.sha_7 }}
         MSG_MINIMAL: true
         SLACK_TITLE: ${{ github.repository }}
-        SLACK_MESSAGE: >
-          :rewind: Rolled back to [${{ steps.last_commit.outputs.sha_7 }}](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }})
+        SLACK_MESSAGE: ":rewind: Rolled back to \
+          [${{ steps.last_commit.outputs.sha_7 }}]\
+          (${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }})"
