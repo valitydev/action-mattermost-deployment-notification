@@ -48,7 +48,7 @@ jobs:
     needs: [deploy] # We are waiting for a successful rollout
     steps:
       - uses: actions/checkout@v4
-      - uses: valitydev/action-mattermost-notify@v0.1.4
+      - uses: valitydev/action-mattermost-deployment-notification@latest
         with:
           webhook: ${{ secrets.MATTERMOST_WEBHOOK_URL }}
           channel: "dashboard-deployments" # link path param
